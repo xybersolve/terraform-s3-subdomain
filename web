@@ -60,7 +60,8 @@ declare -r SYNTAX=$(cat <<EOF
       --help:  help and usage
       --version: show version info
 
-      --upload: upload all pertinent files and directories
+      --sync=<directory>: Synchronize files between project and S3
+      --upload: Upload all pertinent files and directories
       --updoad-file=<file>: TODO
       --upload-dir=<directory>: Upload a given directory
       --delete-file=<file>: TODO
@@ -78,6 +79,7 @@ declare -r SCRIPT_DIR="$( dirname ${0} )"
 declare -r CONF_FILE="${SCRIPT_DIR}/web.conf.sh"
 
 # actions
+declare -i SYNC=${FALSE}
 declare -i UPLOAD=${FALSE}
 declare -i UPLOAD_DIR=${FALSE}
 declare -i DELETE=${FALSE}
@@ -131,9 +133,6 @@ source "${CONF_FILE}" \
   || die "Unable to open configuration file: ${CONF_FILE}" 1
 
 __upload() {
-  local copy_log=copy.log
-  echo '' > ${copy_log}
-
   for file in "${FILES[@]}"; do
     printf "Copying file: %s\n" "${file}"
     aws s3 cp "${SITE_DIR}/${file}" s3://${SITE_BUCKET}
@@ -145,6 +144,13 @@ __upload() {
       --recursive \
       --exclude '*DS_Store*'
   done
+}
+
+__sync() {
+  [[ -z "${DIRECTORY}" ]] \
+    && die "Direcotry argument required. --sync=<directory> is meant to sync a specified directory" 3
+
+  aws s3 sync "${SITE_DIR}/${DIRECTORY}" s3://${SITE_BUCKET}/${DIRECTORY}
 }
 
 __upload_dir() {
@@ -189,6 +195,9 @@ __get_opts() {
     case ${arg} in
       --help)    show_help                   ;;
       --version) show_version                ;;
+      --sync*)            SYNC=${TRUE}
+        [[ ${arg} =~ '=' ]] && DIRECTORY="${arg#*=}"
+        ;;
       --upload)          UPLOAD=${TRUE}      ;;
       --delete)          DELETE=${TRUE}      ;;
       --delete-all)      DELETE_ALL=${TRUE}  ;;
@@ -213,6 +222,7 @@ __get_opts() {
 
 __dispatch() {
   (( LIST )) && __list
+  (( SYNC )) && __sync
   (( UPLOAD )) && __upload
   (( UPLOAD_DIR )) && __upload_dir
   (( DELETE )) && __delete
