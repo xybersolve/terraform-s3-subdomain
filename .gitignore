@@ -1,0 +1,30 @@
+# mac
+*.DS_Store
+.fseventsd
+.AppleDouble
+.Spotlight-V100
+.LSOverride
+.Trashes
+
+# Linux
+*~
+.Trash-*
+
+# ide
+.idea/
+
+# vim
+[._]sw[a-p]
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-v][a-z]
+Session.vim
+tags
+
+# Project
+s3-reference.sh
+archives
+.terraform
+terraform.tfplan*
+terraform.tfstate*
+xybersolve*
