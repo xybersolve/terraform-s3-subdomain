@@ -1,5 +1,5 @@
 #
-#  XyberSolve specific variables, defned higher in the stack
+#  XyberSolve specific variables, defined higher in the stack
 #
 #
 #variable "aws_access_key" {}

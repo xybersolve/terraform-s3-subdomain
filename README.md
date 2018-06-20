@@ -1,4 +1,4 @@
-# terraform-xybersolve.io
+# terraform-s3-subdomain
 
 > Terraform scripted simple static website using S3 & Route53 for DNS
 
@@ -20,7 +20,7 @@ to that domain host.
 
 ## `web` support script
 Provision the website content. Change the variables assignments in `web.conf.sh`.
-After site deployment, this script will enable you to manage your website.
+After terraform provisioning, this script enables management of website content.
 
 ###### web: script for S3 content management
 

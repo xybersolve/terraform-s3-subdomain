@@ -1,5 +1,5 @@
 #
-#  Primary static website  & log buckets
+#  Primary static website
 #
 resource "aws_s3_bucket" "site" {
   bucket = "${var.bucket_site}"
@@ -39,9 +39,8 @@ EOF
   }
   force_destroy = true
 }
-
 #
-# Logs
+# Log bucket
 #
 resource "aws_s3_bucket" "logs_site" {
   bucket = "${var.bucket_logs}"
@@ -55,7 +54,9 @@ resource "aws_s3_bucket" "logs_site" {
     Terraform = "True"
   }
 }
-
+#
+# Provisioning (web site content)
+#
 resource "null_resource" "website_content" {
 
   depends_on = ["aws_s3_bucket.site"]

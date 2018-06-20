@@ -1,5 +1,5 @@
 # variable "application" {
-#   default = "xybersolve.io"
+#   default = "my-application"
 # }
 
 variable "dns_host_name" {
@@ -17,7 +17,3 @@ variable "bucket_site" {
 variable "bucket_logs" {
   default = "logs.dev.mydomain.com"
 }
-
-# variable "bucket_www" {
-#   default = "www.xybersolve.io"
-# }
